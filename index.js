@@ -1,23 +1,20 @@
+require("dotenv").config();
+
 const express = require("express");
 const mongoose = require("mongoose");
+const Product = require("./models/product.model.js");
+const productRoutes = require("./controllers/ProductsController.js");
 
 const app = express();
-
 app.use(express.json());
-
 app.get("/", (req, res) => {
   res.send("Hello bro  from node api");
 });
 
-app.post("/api/products", (req, res) => {
-  console.log(req.body);
-  res.send(req.body);
-});
+app.use(productRoutes);
 
 mongoose
-  .connect(
-    "mongodb+srv://admin:admin1997@crud.gaca4.mongodb.net/?retryWrites=true&w=majority&appName=CRUD"
-  )
+  .connect(process.env.CONNECTION_STRING)
   .then(() => {
     console.log("mongoose is Connected!");
     app.listen(3000, () => {
